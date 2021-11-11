@@ -32,6 +32,7 @@ public class Window {
 	public void addKeyListener(KeyListener listener) {
 		
 		this.panel.addKeyListener(listener);
+		this.panel.setFocusable(true);
 	}
 	
 	public void createWindow() {
@@ -41,10 +42,5 @@ public class Window {
 		this.frame.setLocationRelativeTo(null);
 		this.frame.setVisible(true);
 	}
-	
-	public void render() {
-		
-		this.panel.repaint();
-	}
-	
+
 }

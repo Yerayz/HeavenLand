@@ -6,8 +6,17 @@ import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
 
+import heavenland.gamestate.GameStateManager;
+
 public class GamePanel extends JPanel {
 
+	private GameStateManager gameStateManager;
+	
+	public GamePanel(GameStateManager gameStateManager) {
+		
+		this.gameStateManager = gameStateManager;
+	}
+	
 	@Override
 	public void paintComponent(Graphics g) {
 		
@@ -15,8 +24,7 @@ public class GamePanel extends JPanel {
 		
 		Graphics2D g2d = (Graphics2D) g;
 		
-		g2d.setColor(Color.white);
-		g2d.fillRect(100, 100, 48, 48);
+		this.gameStateManager.render(g2d);
 		
 		g2d.dispose();
 	}
