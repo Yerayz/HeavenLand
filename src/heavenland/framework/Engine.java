@@ -2,17 +2,22 @@ package heavenland.framework;
 
 import heavenland.gamestate.GameStateManager;
 import heavenland.gamestate.Playing;
+import heavenland.resource.Loader;
 
 public class Engine implements Runnable {
 
 	private GameStateManager gameStateManager;
 	private GamePanel gamePanel;
 	private KeyHandler keyH;
-	private Window window;
+	private Loader loader;
 	private Thread gameThread;
+	private Window window;
+	
 	
 	public void init() {
 		
+		this.loader = new Loader();
+		this.loader.load();
 		this.gameStateManager = new GameStateManager();
 		this.gamePanel = new GamePanel(gameStateManager);
 		this.keyH = new KeyHandler();

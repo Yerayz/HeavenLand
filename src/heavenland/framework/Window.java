@@ -15,6 +15,9 @@ public class Window {
 	public static final int WIDTH = 1200;
 	public static final int HEIGHT = 672;
 	
+	public static final int CENTER_SCREEN_X = WIDTH/2;
+	public static final int CENTER_SCREEN_Y = HEIGHT/2;
+	
 	public Window() {
 		
 		this.frame = new JFrame("Heaven Land");

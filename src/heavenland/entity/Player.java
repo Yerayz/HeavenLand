@@ -7,24 +7,30 @@ import java.awt.image.BufferedImage;
 import heavenland.framework.KeyHandler;
 import heavenland.framework.Window;
 import heavenland.resource.Res;
+import heavenland.world.Region;
 import heavenland.world.Tile;
 
 public class Player extends Entity {
 
-	public final int screenX;
-	public final int screenY;
+	public final int absScreenX;
+	public final int absScreenY;
+	public int screenX;
+	public int screenY;
 	
-	public BufferedImage up, down, left, right;
+	private BufferedImage up, down, left, right;
 	
 	public Player() {
 		
-		this.screenX = Window.WIDTH/2 - Tile.SIZE/2;
-		this.screenY = Window.HEIGHT/2 - Tile.SIZE;
+		this.absScreenX = Window.WIDTH/2 - Tile.SIZE/2;
+		this.absScreenY = Window.HEIGHT/2 - Tile.SIZE;
 		
-		this.up = Res.TEXTURES.get(Res.PLAYER_U);
-		this.down = Res.TEXTURES.get(Res.PLAYER_D);
-		this.left = Res.TEXTURES.get(Res.PLAYER_L);
-		this.right = Res.TEXTURES.get(Res.PLAYER_R);
+		this.screenX = absScreenX;
+		this.screenY = absScreenY;
+		
+		this.up = Res.SPRITE.get(Res.PLAYER_U);
+		this.down = Res.SPRITE.get(Res.PLAYER_D);
+		this.left = Res.SPRITE.get(Res.PLAYER_L);
+		this.right = Res.SPRITE.get(Res.PLAYER_R);
 		
 		this.solidArea = new Rectangle(8, 16, 32, 32);
 		
@@ -33,30 +39,48 @@ public class Player extends Entity {
 	
 	public void setDefault() {
 		
-		this.mapX = 345;
-		this.mapY = 454;
+		this.mapX = 1200;
+		this.mapY = 1296;
 		this.speed = 4;
 		this.direction = Direction.DOWN;
 	}
 	
-	public void tick(KeyHandler keyH) {
+	public void tick(KeyHandler keyH, Region region) {
+		
+		if(screenX == absScreenX && screenY == absScreenY)
+			System.out.println("aman");
+		else
+			System.out.println(screenX + " " + screenY + " | " + absScreenX + " " + absScreenY);
 		
 		if(keyH.upPressed == true && keyH.downPressed == false) {
+			
 			direction = Direction.UP;
 			mapY -= speed;
+			if(mapY < absScreenY || mapY >= region.maxRegionY - Window.CENTER_SCREEN_Y - Tile.SIZE) 
+				screenY -= speed;
 		}
 		if(keyH.downPressed == true && keyH.upPressed == false) {
+			
 			direction = Direction.DOWN;
 			mapY += speed;
+			if(mapY <= absScreenY || mapY > region.maxRegionY - Window.CENTER_SCREEN_Y - Tile.SIZE) 
+				screenY += speed;
 		}
 		if(keyH.leftPressed == true && keyH.rightPressed == false) {
+			
 			direction = Direction.LEFT;
 			mapX -= speed;
+			if(mapX < absScreenX || mapX >= region.maxRegionX - Window.CENTER_SCREEN_X - Tile.SIZE/2)
+				screenX -= speed;
 		}
 		if(keyH.rightPressed == true  && keyH.leftPressed == false) {
+			
 			direction = Direction.RIGHT;
 			mapX += speed;
+			if(mapX <= absScreenX || mapX > region.maxRegionX - Window.CENTER_SCREEN_X - Tile.SIZE/2)
+				screenX += speed;
 		}
+		
 	}
 	
 	public void render(Graphics2D g2d) {
