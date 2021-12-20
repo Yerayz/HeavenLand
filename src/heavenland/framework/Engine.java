@@ -1,6 +1,7 @@
 package heavenland.framework;
 
 import heavenland.gamestate.GameStateManager;
+import heavenland.gamestate.MainMenu;
 import heavenland.gamestate.Playing;
 import heavenland.resource.Loader;
 
@@ -9,6 +10,7 @@ public class Engine implements Runnable {
 	private GameStateManager gameStateManager;
 	private GamePanel gamePanel;
 	private KeyHandler keyH;
+	private MouseHandler mouseH;
 	private Loader loader;
 	private Thread gameThread;
 	private Window window;
@@ -20,16 +22,17 @@ public class Engine implements Runnable {
 		this.loader.load();
 		this.gameStateManager = new GameStateManager();
 		this.gamePanel = new GamePanel(gameStateManager);
-		this.keyH = new KeyHandler();
+		this.keyH = new KeyHandler(gameStateManager);
+		this.mouseH = new MouseHandler(gameStateManager);
 		this.window = new Window();
 		this.gameThread = new Thread(this);
 	}
 	
 	public void start() {
 		
-		this.gameStateManager.addState(new Playing(gameStateManager, keyH));
+		this.gameStateManager.addState(new MainMenu(gameStateManager));
 		this.window.addPanel(gamePanel);
-		this.window.addKeyListener(keyH);
+		this.window.addListener(keyH, mouseH);
 		this.window.createWindow();
 		
 		this.gameThread.start();
@@ -55,11 +58,11 @@ public class Engine implements Runnable {
 			lastTime = currentTime;
 			
 			if(delta >= 1) {
-				this.gameStateManager.tick();
+				gameStateManager.tick();
 				TPS++;
 				delta--;
 			}
-			this.gamePanel.repaint();
+			gamePanel.repaint();
 			FPS++;
 			
 			if(timer >= 1000000000) {

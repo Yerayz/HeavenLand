@@ -2,9 +2,11 @@ package heavenland.world;
 
 import java.awt.Rectangle;
 
+import heavenland.framework.Window;
+
 public class Tile extends Rectangle {
 
-	public static final int SIZE = 48;
+	public static final int SIZE = 16 * Window.SCALE;
 	
 	private byte tileID;
 	private boolean collision;
