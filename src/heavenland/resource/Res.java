@@ -23,14 +23,16 @@ public class Res {
 	
 	// GUI
 	public static final byte MAINMENU_BG = 0;
-	public static final byte NEW_GAME_BTN = 1;
-	public static final byte NEW_GAME_BTN_P = 2;
-	public static final byte LOAD_GAME_BTN = 3;
-	public static final byte LOAD_GAME_BTN_P = 4;
-	public static final byte EXIT_BTN = 5;
-	public static final byte EXIT_BTN_P = 6;
-	public static final byte INVENTORY = 7;
-	public static final byte SELECTED = 8;
+	public static final byte MAINMENU_LOGO = 1;
+	public static final byte NEW_GAME_BTN = 2;
+	public static final byte NEW_GAME_BTN_P = 3;
+	public static final byte LOAD_GAME_BTN = 4;
+	public static final byte LOAD_GAME_BTN_P = 5;
+	public static final byte EXIT_BTN = 6;
+	public static final byte EXIT_BTN_P = 7;
+	public static final byte INVENTORY_BAR = 8;
+	public static final byte INVENTORY_BTN = 9;
+	public static final byte SELECTED = 10;
 	
 	// TILES
 	public static final byte LAND = 0;

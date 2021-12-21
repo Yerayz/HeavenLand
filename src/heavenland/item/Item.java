@@ -31,4 +31,9 @@ public class Item {
 		
 		return itemID;
 	}
+	
+	public BufferedImage getImage() {
+		
+		return Res.ITEM.get(itemID).getImage();
+	}
 }

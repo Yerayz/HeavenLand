@@ -26,6 +26,7 @@ public class Loader {
 		try {
 			
 			Res.GUI.add(ImageIO.read(getClass().getResourceAsStream("/gui/mainmenu_bg.jpeg")));
+			Res.GUI.add(ImageIO.read(getClass().getResourceAsStream("/gui/logo menu.png")));
 			BufferedImage btnSheet = ImageIO.read(getClass().getResourceAsStream("/gui/button_tilesheet.png"));
 			Res.GUI.add(btnSheet.getSubimage(0, 0, 64, 16));
 			Res.GUI.add(btnSheet.getSubimage(64, 0, 64, 16));
@@ -34,7 +35,8 @@ public class Loader {
 			Res.GUI.add(btnSheet.getSubimage(0, 32, 64, 16));
 			Res.GUI.add(btnSheet.getSubimage(64, 32, 64, 16));
 			
-			Res.GUI.add(ImageIO.read(getClass().getResourceAsStream("/gui/inventory.png")));
+			Res.GUI.add(ImageIO.read(getClass().getResourceAsStream("/gui/inventory_bar.png")));
+			Res.GUI.add(ImageIO.read(getClass().getResourceAsStream("/gui/inventory_button.png")));
 			Res.GUI.add(ImageIO.read(getClass().getResourceAsStream("/gui/selected.png")));
 			
 		} catch (IOException e) {

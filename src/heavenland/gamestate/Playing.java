@@ -6,10 +6,14 @@ import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import heavenland.entity.Player;
 import heavenland.framework.KeyHandler;
 import heavenland.framework.Window;
+import heavenland.gui.GButton;
+import heavenland.gui.GComponent;
+import heavenland.gui.GInventButton;
 import heavenland.resource.Res;
 import heavenland.world.Region;
 
@@ -17,14 +21,20 @@ public class Playing extends GameState {
 
 	private Player player;
 	private Region region;
-	private GameInterface gameI;
+	private ArrayList<GButton> buttons;
+	private ArrayList<GComponent> backComponents;
+	private ArrayList<GComponent> frontComponents;
 	
 	public Playing(GameStateManager manager) {
 		super(manager);
 		
 		this.player = new Player();
 		this.region = new Region((byte)0);
-		this.gameI = new GameInterface(player);
+		this.buttons = new ArrayList<>();
+		this.backComponents = new ArrayList<>();
+		this.frontComponents = new ArrayList<>();
+		
+		setInterface();
 	}
 
 	@Override
@@ -46,7 +56,45 @@ public class Playing extends GameState {
 		region.renderMapObject(g2d, player);
 		player.render(g2d);
 		region.renderMapObjectForeGround(g2d, player);
-		gameI.render(g2d);
+		renderInterface(g2d);
+	}
+	
+	public void setInterface() {
+		
+		BufferedImage image;
+		int imageWidth;
+		int imageHeight;
+		
+		image = Res.GUI.get(Res.INVENTORY_BAR);
+		imageWidth = image.getWidth()*Window.SCALE;
+		imageHeight = image.getHeight()*Window.SCALE;
+		backComponents.add(new GComponent(Res.GUI.get(Res.INVENTORY_BAR),(Window.WIDTH-imageWidth)/2, (Window.HEIGHT-imageHeight)-10));
+		
+		for(int i = 0; i < 12; i++) {
+			buttons.add(new GInventButton(Res.GUI.get(Res.INVENTORY_BTN), backComponents.get(0).x+21+i*54, backComponents.get(0).y+21));
+		}
+		
+		updateInterface();
+	}
+	
+	public void updateInterface() {
+		GInventButton btn;
+		for(int i = 0; i < 12; i++) {
+			btn = ((GInventButton)buttons.get(i));
+			btn.setItem(player.inventory[0][i]);
+			if(player.selectedItem == i)
+				btn.isSelected = true;
+			else
+				btn.isSelected = false;
+		}
+	}
+	
+	public void renderInterface(Graphics2D g2d) {
+		
+		for(GComponent i : backComponents)
+			i.render(g2d);
+		for(GButton i : buttons)
+			i.render(g2d);
 	}
 	
 	public boolean upPressed, downPressed, leftPressed, rightPressed;
@@ -99,10 +147,29 @@ public class Playing extends GameState {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
+		
+		int x = e.getX();
+		int y = e.getY();
+		for(GButton i : buttons) 
+			if(i.isOnButton(x, y))
+				i.isPressed = true;
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
+		
+		int x = e.getX();
+		int y = e.getY();
+		for(int i = 0; i < 12; i++)
+			if(buttons.get(i).isPressed && buttons.get(i).isOnButton(x, y)) {
+				player.selectedItem = i;
+				updateInterface();
+				break;
+			}
+		
+		for(GButton i : buttons) 
+			if(i.isOnButton(x, y))
+				i.isPressed = false;
 	}
 
 	@Override
@@ -111,38 +178,6 @@ public class Playing extends GameState {
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-	}
-	
-	class GameInterface {
-		
-		Player player;
-		
-		public GameInterface(Player player) {
-			
-			this.player = player;
-		}
-		
-		public void render(Graphics2D g2d) {
-			
-			BufferedImage image;
-			int imageWidth;
-			int imageHeight;
-			
-			// INVENTORY
-			image = Res.GUI.get(Res.INVENTORY);
-			imageWidth = image.getWidth()*Window.SCALE;
-			imageHeight = image.getHeight()*Window.SCALE;
-			g2d.drawImage(image, (Window.WIDTH-imageWidth)/2, (Window.HEIGHT-imageHeight)-10, imageWidth, imageHeight, null);
-			for(int i = 0; i < 12; i++) {
-				if(player.inventory[0][i] != null)
-					g2d.drawImage(Res.ITEM.get(player.inventory[0][i].getID()).getImage(), (Window.WIDTH-imageWidth)/2+24+i*54, 
-							(Window.HEIGHT-imageHeight)-10+24, 48, 48, null);
-				if(player.selectedItem == i) {
-					g2d.drawImage(Res.GUI.get(Res.SELECTED), (Window.WIDTH-imageWidth)/2+21+i*48, 
-							(Window.HEIGHT-imageHeight)-10+21, 54, 54, null);
-				}
-			}
-		}
 	}
 
 }
