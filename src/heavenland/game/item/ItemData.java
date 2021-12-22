@@ -1,4 +1,4 @@
-package heavenland.item;
+package heavenland.game.item;
 
 import java.awt.image.BufferedImage;
 

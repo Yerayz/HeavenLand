@@ -7,11 +7,11 @@ import java.util.ArrayList;
 
 import heavenland.framework.KeyHandler;
 import heavenland.framework.Window;
-import heavenland.item.Item;
-import heavenland.object.Object;
+import heavenland.game.item.Item;
+import heavenland.game.object.Object;
+import heavenland.game.world.Region;
+import heavenland.game.world.Tile;
 import heavenland.resource.Res;
-import heavenland.world.Region;
-import heavenland.world.Tile;
 
 public class Player extends Entity {
 
@@ -21,6 +21,7 @@ public class Player extends Entity {
 	public int screenY;
 	public Item[][] inventory;
 	public int selectedItem;
+	public int energy;
 	
 	private BufferedImage up, down, left, right;
 	
@@ -50,10 +51,12 @@ public class Player extends Entity {
 		this.speed = 5;
 		this.direction = Direction.DOWN;
 		this.inventory[0][0] = new Item(Res.WATERING_CAN);
-		this.inventory[0][1] = new Item(Res.AXE);
-		this.inventory[0][2] = new Item(Res.PICKAXE);
-		this.inventory[0][3] = new Item(Res.SCYTHE);
+		this.inventory[0][1] = new Item(Res.HOE);
+		this.inventory[0][2] = new Item(Res.AXE);
+		this.inventory[0][3] = new Item(Res.PICKAXE);
+		this.inventory[0][4] = new Item(Res.SCYTHE);
 		this.selectedItem = 0;
+		this.energy = 150;
 	}
 	
 	public void tick(Region region, boolean upPressed, boolean downPressed, boolean leftPressed, boolean rightPressed) {
@@ -154,6 +157,18 @@ public class Player extends Entity {
 //				System.out.println("x right");
 			}
 		}
+	}
+	
+	public Item getSelectedItem() {
+		
+		int row = selectedItem/12;
+		int col = selectedItem%12;
+		return inventory[row][col];
+	}
+	
+	public int getSelectedItemID() {
+		
+		return getSelectedItem().getID();
 	}
 	
 }

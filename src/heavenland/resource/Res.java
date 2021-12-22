@@ -3,18 +3,19 @@ package heavenland.resource;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-import heavenland.item.ItemData;
-import heavenland.object.Object;
-import heavenland.object.ObjectData;
-import heavenland.world.Region;
-import heavenland.world.RegionData;
-import heavenland.world.Tile;
-import heavenland.world.TileData;
+import heavenland.game.item.ItemData;
+import heavenland.game.object.Object;
+import heavenland.game.object.ObjectData;
+import heavenland.game.world.Region;
+import heavenland.game.world.RegionData;
+import heavenland.game.world.Tile;
+import heavenland.game.world.TileData;
 
 public class Res {
 	
 	public static final ArrayList<BufferedImage> GUI = new ArrayList<>();
 	public static final ArrayList<TileData> TEXTURES = new ArrayList<>();
+	public static final ArrayList<TileData> TERRAIN = new ArrayList<>();
 	public static final ArrayList<ObjectData> OBJECT = new ArrayList<>();
 	public static final ArrayList<ItemData> ITEM = new ArrayList<>();
 	public static final ArrayList<BufferedImage> SPRITE = new ArrayList<>();
@@ -45,7 +46,10 @@ public class Res {
 	public static final byte GRASS_DL = 7;
 	public static final byte GRASS_DM = 8;
 	public static final byte GRASS_DR = 9;
-	public static final byte WATER = 10;
+	
+	//TERRAIN
+	public static final byte LAND_HOE = 1;
+	public static final byte LAND_HOE_WATERED = 2;
 	
 	// OBJECT
 	public static final byte BLANK = 0;
@@ -63,9 +67,10 @@ public class Res {
 	
 	// ITEM
 	public static final byte WATERING_CAN = 0;
-	public static final byte AXE = 1;
-	public static final byte PICKAXE = 2;
-	public static final byte SCYTHE = 3;
+	public static final byte HOE = 1;
+	public static final byte AXE = 2;
+	public static final byte PICKAXE = 3;
+	public static final byte SCYTHE = 4;
 	
 	// SPRITE
 	public static final byte PLAYER_U = 0;

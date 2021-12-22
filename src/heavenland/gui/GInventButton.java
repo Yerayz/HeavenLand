@@ -4,7 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
 import heavenland.framework.Window;
-import heavenland.item.Item;
+import heavenland.game.item.Item;
 import heavenland.resource.Res;
 
 public class GInventButton extends GButton {

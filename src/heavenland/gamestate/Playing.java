@@ -6,24 +6,28 @@ import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.sql.Time;
 import java.util.ArrayList;
 
 import heavenland.entity.Player;
 import heavenland.framework.KeyHandler;
 import heavenland.framework.Window;
+import heavenland.game.GTime;
+import heavenland.game.world.Region;
 import heavenland.gui.GButton;
 import heavenland.gui.GComponent;
 import heavenland.gui.GInventButton;
 import heavenland.resource.Res;
-import heavenland.world.Region;
 
 public class Playing extends GameState {
 
+	private GTime time;
 	private Player player;
 	private Region region;
 	private ArrayList<GButton> buttons;
 	private ArrayList<GComponent> backComponents;
 	private ArrayList<GComponent> frontComponents;
+	private static int ticks;
 	
 	public Playing(GameStateManager manager) {
 		super(manager);
@@ -33,12 +37,20 @@ public class Playing extends GameState {
 		this.buttons = new ArrayList<>();
 		this.backComponents = new ArrayList<>();
 		this.frontComponents = new ArrayList<>();
-		
+		this.time = new GTime();
+		ticks = 0;
 		setInterface();
 	}
 
 	@Override
 	protected void tick() {
+		
+		time.tick();
+		ticks++;
+		if(ticks == 60) {
+			System.out.println(time);
+			ticks = 0;
+		}
 		
 		player.tick(region, upPressed, downPressed, leftPressed, rightPressed);
 		for(int i = 0; i < region.objects.length; i++) {
@@ -53,6 +65,7 @@ public class Playing extends GameState {
 	protected void render(Graphics2D g2d) {
 		
 		region.renderMap(g2d, player);
+		region.renderMapTerrain(g2d, player);
 		region.renderMapObject(g2d, player);
 		player.render(g2d);
 		region.renderMapObjectForeGround(g2d, player);
@@ -143,6 +156,18 @@ public class Playing extends GameState {
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		
+		int x = e.getX();
+		int y = e.getY();
+		if(player.getSelectedItemID() == Res.PICKAXE) {
+			region.setTerrain(player, x, y, 0);
+		}
+		else if(player.getSelectedItemID() == Res.HOE) {
+			region.setTerrain(player, x, y, 1);
+		}
+		else if(player.getSelectedItemID() == Res.WATERING_CAN) {
+			region.setTerrain(player, x, y, 2);
+		}
 	}
 
 	@Override
@@ -179,5 +204,6 @@ public class Playing extends GameState {
 	@Override
 	public void mouseExited(MouseEvent e) {
 	}
+	
 
 }

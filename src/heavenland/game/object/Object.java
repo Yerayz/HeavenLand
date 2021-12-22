@@ -1,4 +1,4 @@
-package heavenland.object;
+package heavenland.game.object;
 
 import java.awt.Rectangle;
 

@@ -10,13 +10,13 @@ import java.io.InputStreamReader;
 
 import javax.imageio.ImageIO;
 
-import heavenland.item.ItemData;
-import heavenland.item.ItemData.ItemType;
-import heavenland.object.Object;
-import heavenland.object.ObjectData;
-import heavenland.world.RegionData;
-import heavenland.world.Tile;
-import heavenland.world.TileData;
+import heavenland.game.item.ItemData;
+import heavenland.game.item.ItemData.ItemType;
+import heavenland.game.object.Object;
+import heavenland.game.object.ObjectData;
+import heavenland.game.world.RegionData;
+import heavenland.game.world.Tile;
+import heavenland.game.world.TileData;
 
 public class Loader {
 
@@ -62,8 +62,21 @@ public class Loader {
 			
 //			Res.TEXTURES.add(Res.LAND, new TileData(ImageIO.read(getClass().getResourceAsStream("/tile/land.png")), false));
 //			Res.TEXTURES.add(Res.GRASS, new TileData(ImageIO.read(getClass().getResourceAsStream("/tile/grass.png")), true));
-//			Res.TEXTURES.add(Res.WATER, new TileData(ImageIO.read(getClass().getResourceAsStream("/tile/water.png")), true));
+//			Res.TEXTURES.add(Res.LAND_HOE, new TileData(ImageIO.read(getClass().getResourceAsStream("/terrain/land_hoe.png")), true));
+//			Res.TEXTURES.add(Res.LAND_HOE_WATERED, new TileData(ImageIO.read(getClass().getResourceAsStream("/terrain/land_hoe_watered.png")), true));
+			
+		} catch (IOException e) {
+			System.out.println("[Loader] : Can't load tiles / file not found");
+			e.printStackTrace();
+		}
 		
+		// TERRAIN
+		try {
+			
+			Res.TERRAIN.add(Res.BLANK, new TileData(ImageIO.read(getClass().getResourceAsStream("/tile/blank.png")), false));
+			Res.TERRAIN.add(Res.LAND_HOE, new TileData(ImageIO.read(getClass().getResourceAsStream("/terrain/land_hoe.png")), false));
+			Res.TERRAIN.add(Res.LAND_HOE_WATERED, new TileData(ImageIO.read(getClass().getResourceAsStream("/terrain/land_hoe_watered.png")), false));
+			
 		} catch (IOException e) {
 			System.out.println("[Loader] : Can't load tiles / file not found");
 			e.printStackTrace();
@@ -104,6 +117,7 @@ public class Loader {
 			Res.ITEM.add(new ItemData(toolSheet.getSubimage(16, 0, 16, 16), ItemType.TOOL, false));
 			Res.ITEM.add(new ItemData(toolSheet.getSubimage(32, 0, 16, 16), ItemType.TOOL, false));
 			Res.ITEM.add(new ItemData(toolSheet.getSubimage(48, 0, 16, 16), ItemType.TOOL, false));
+			Res.ITEM.add(new ItemData(toolSheet.getSubimage(64, 0, 16, 16), ItemType.TOOL, false));
 			
 		} catch (IOException e) {
 			System.out.println("[Loader] : Can't load items / file not found");

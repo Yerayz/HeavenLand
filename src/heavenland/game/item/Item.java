@@ -1,8 +1,8 @@
-package heavenland.item;
+package heavenland.game.item;
 
 import java.awt.image.BufferedImage;
 
-import heavenland.item.ItemData.ItemType;
+import heavenland.game.item.ItemData.ItemType;
 import heavenland.resource.Res;
 
 public class Item {

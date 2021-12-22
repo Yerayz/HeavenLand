@@ -1,4 +1,4 @@
-package heavenland.world;
+package heavenland.game.world;
 
 public class RegionData {
 
