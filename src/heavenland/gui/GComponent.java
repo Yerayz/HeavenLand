@@ -10,8 +10,8 @@ public class GComponent {
 	BufferedImage image;
 	public int x;
 	public int y;
-	int width;
-	int height;
+	public int width;
+	public int height;
 	
 	public GComponent(BufferedImage image, int x, int y, int width, int height) {
 		

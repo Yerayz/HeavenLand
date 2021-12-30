@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
 import java.util.EmptyStackException;
 import java.util.Stack;
 
@@ -51,6 +52,21 @@ private Stack<GameState> states;
 			
 		} catch(EmptyStackException e) {
 			System.err.println("[GameStateManager]: Error! GameState stack is empty!");
+			System.exit(-1);
+		}
+	}
+	
+	public void renderPreviousState(Graphics2D g2d) {
+		
+		try {
+			
+			this.states.get(states.size()-2).render(g2d);
+			
+		} catch(EmptyStackException e) {
+			System.err.println("[GameStateManager]: Error! GameState stack is empty!");
+			System.exit(-1);
+		} catch(IndexOutOfBoundsException e) {
+			System.err.println("[GameStateManager]: Error! GameState stack containts only 1 state!");
 			System.exit(-1);
 		}
 	}
@@ -121,6 +137,33 @@ private Stack<GameState> states;
 	public void mouseExited(MouseEvent me) {
 		try {
 			this.states.peek().mouseExited(me);
+		} catch(EmptyStackException e) {
+			System.err.println("[GameStateManager]: Error! GameState stack is empty!");
+			System.exit(-1);
+		}
+	}
+	
+	public void mouseWheelMoved(MouseWheelEvent me) {
+		try {
+			this.states.peek().mouseWheelMoved(me);
+		} catch(EmptyStackException e) {
+			System.err.println("[GameStateManager]: Error! GameState stack is empty!");
+			System.exit(-1);
+		}
+	}
+
+	public void mouseDragged(MouseEvent me) {
+		try {
+			this.states.peek().mouseDragged(me);
+		} catch(EmptyStackException e) {
+			System.err.println("[GameStateManager]: Error! GameState stack is empty!");
+			System.exit(-1);
+		}
+	}
+
+	public void mouseMoved(MouseEvent me) {
+		try {
+			this.states.peek().mouseMoved(me);
 		} catch(EmptyStackException e) {
 			System.err.println("[GameStateManager]: Error! GameState stack is empty!");
 			System.exit(-1);

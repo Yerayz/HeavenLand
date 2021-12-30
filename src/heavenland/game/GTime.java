@@ -34,6 +34,18 @@ public class GTime {
 		return second;        
 	}
 	
+	public int getDay() {                      
+		return day;        
+	}
+     
+	public int getMonth() {                        
+		return month;        
+	}
+ 
+	public int getYear() {                        
+		return year;        
+	}
+	
 	public void setDefaultDate() {
 		
 		day = 1;
@@ -45,7 +57,7 @@ public class GTime {
 		
 		second = 0;
 		minute = 0;
-		hour = 5;
+		hour = 6;
 	}
 	
 	public void incrementHour() {
@@ -73,10 +85,39 @@ public class GTime {
 			this.second++;
 	}
 	
+	public void incrementYear() {
+		this.year++;
+	}
+	
+	public void incrementMonth() {
+		if (month == 2) {
+			this.month = 1;
+			incrementYear();
+		}
+		else
+			this.month++;
+	}
+	
+	public void incrementDay() {
+		if (day == 28) {
+			this.day = 1;
+			incrementMonth();
+		}
+		else
+			this.day++;
+	}
+	
+	public String toStringGame() {
+		return String.format("%02d:%02d %s", 
+				((getHour() == 0 || getHour() == 12) ? 12 : getHour() % 12),
+				getMinute()/5*5, (getHour() < 12 ? "AM" : "PM"));
+	}
+	
 	@Override
 	public String toString() {
-		return String.format("%d:%02d:%02d %s", 
+		return String.format("%02d:%02d:%02d %s", 
 				((getHour() == 0 || getHour() == 12) ? 12 : getHour() % 12),
 				getMinute(), getSecond(), (getHour() < 12 ? "AM" : "PM"));
 	}
+	
 }

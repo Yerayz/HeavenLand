@@ -15,7 +15,6 @@ public class Engine implements Runnable {
 	private Thread gameThread;
 	private Window window;
 	
-	
 	public void init() {
 		
 		this.loader = new Loader();
