@@ -37,7 +37,7 @@ public class MainMenu extends GameState {
 		
 		components.add(new GComponent(Res.GUI.get(Res.MAINMENU_LOGO), (Window.WIDTH-179*Window.SCALE)/2, 50, 179, 99));
 		try {
-			AudioInputStream ais = AudioSystem.getAudioInputStream(Res.SOUND.get(Res.RAIN));
+			AudioInputStream ais = AudioSystem.getAudioInputStream(Res.SOUND.get(Res.MAINMENU));
 			clip = AudioSystem.getClip();
 			clip.open(ais);
 		} catch (Exception e) {

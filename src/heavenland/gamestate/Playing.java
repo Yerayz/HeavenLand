@@ -14,6 +14,10 @@ import java.io.IOException;
 import java.sql.Time;
 import java.util.ArrayList;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+
 import heavenland.entity.Entity.Direction;
 import heavenland.entity.Player;
 import heavenland.framework.KeyHandler;
@@ -36,6 +40,7 @@ public class Playing extends GameState {
 	private ArrayList<GComponent> frontComponents;
 	public static int ticks;
 	private Font gameFont;
+	private Clip clip;
 	
 	public Playing(GameStateManager manager) {
 		super(manager);
@@ -61,18 +66,29 @@ public class Playing extends GameState {
 			e.printStackTrace();
 			gameFont = new Font("TimesRoman", Font.PLAIN, 32);
 		}
+		
+		try {
+			AudioInputStream ais = AudioSystem.getAudioInputStream(Res.SOUND.get(Res.DRY));
+			clip = AudioSystem.getClip();
+			clip.open(ais);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	protected void tick() {
 		
 		updateInterface();
-		if(ticks % 30 == 0) time.incrementMinute();
+		if(ticks % 20 == 0) time.incrementMinute();
 		ticks++;
 		if(ticks == 60) {
 			System.out.println(time);
 			ticks = 0;
 		}
+		if(time.getHour() == 7 || time.getHour() == 12)
+			clip.start();
+		
 		if(time.getHour() == 18)
 			newDay();
 		
@@ -165,6 +181,9 @@ public class Playing extends GameState {
 		gameStateManager.addState(new FadeOut(gameStateManager));
 		time.incrementDay();
 		time.resetTime();
+		
+		player.setLocation(432 + Window.CENTER_SCREEN_X, 192 + Window.CENTER_SCREEN_Y);
+		player.setDirection(Direction.DOWN);
 		
 		region.updateCrop();
 		

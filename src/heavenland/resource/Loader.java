@@ -381,9 +381,9 @@ public class Loader {
 		// SOUND
 //		try {
 			
-			Res.SOUND.add(getClass().getResource("/sound/menu4.mp3"));
-			Res.SOUND.add(getClass().getResource("/sound/sunny3.mid"));
-			Res.SOUND.add(getClass().getResource("/sound/rainyfix.aiff"));
+			Res.SOUND.add(getClass().getResource("/sound/menu.aiff"));
+			Res.SOUND.add(getClass().getResource("/sound/sunny.aiff"));
+			Res.SOUND.add(getClass().getResource("/sound/rainy.aiff"));
 			
 //		} catch (IOException e) {
 //			System.out.println("[Loader] : Can't load tiles / file not found");
