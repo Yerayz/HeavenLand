@@ -19,12 +19,23 @@ public class Item {
 		this.isStackable = isStackable;
 	}
 	
+	public Item(byte itemID, int quantity) {
+		
+		ItemData data = Res.ITEM.get(itemID);
+		this.itemID = itemID;
+		this.type = data.type;
+		this.isStackable = data.isStackable;
+		this.quantity = quantity;
+	}
+	
 	public Item(byte itemID) {
 		
 		ItemData data = Res.ITEM.get(itemID);
 		this.itemID = itemID;
 		this.type = data.type;
 		this.isStackable = data.isStackable;
+		if(!isStackable)
+			this.quantity = 1;
 	}
 	
 	public byte getID() {

@@ -53,6 +53,7 @@ public class Crop extends Object {
 		else if(age == maxAge) {
 			state = 4;
 			objectID++;
+			isInteractable = true;
 		}
 	}
 

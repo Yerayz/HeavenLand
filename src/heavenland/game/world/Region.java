@@ -3,13 +3,18 @@ package heavenland.game.world;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
+import java.util.Random;
 
 import heavenland.entity.Player;
 import heavenland.entity.Entity.Direction;
 import heavenland.framework.Window;
+import heavenland.game.item.Item;
+import heavenland.game.item.ItemData.ItemType;
 import heavenland.game.object.Crop;
 import heavenland.game.object.Object;
+import heavenland.game.object.ObjectData;
 import heavenland.game.object.Object.ObjectType;
+import heavenland.gamestate.Playing;
 import heavenland.resource.Res;
 
 public class Region {
@@ -394,8 +399,9 @@ public class Region {
 		int objectRow = objectMapY/Tile.SIZE;
 		objectMapX = objectCol*Tile.SIZE;
 		objectMapY = objectRow*Tile.SIZE;
+		Item currItem = player.getSelectedItem();
 		if(objects.get(currentReg)[objectRow][objectCol] != null && terrain.get(currentReg)[objectRow][objectCol] != null && (terrain.get(currentReg)[objectRow][objectCol].getID() == 1 ||terrain.get(currentReg)[objectRow][objectCol].getID() == 2)) {
-			switch(player.getSelectedItemID()) {
+			switch(currItem.getID()) {
 			case Res.CORN_SEED: objects.get(currentReg)[objectRow][objectCol] = new Crop(Res.CORN_0, objectMapX, objectMapY); break;
 			case Res.CARROT_SEED: objects.get(currentReg)[objectRow][objectCol] = new Crop(Res.CARROT_0, objectMapX, objectMapY); break;
 			case Res.CABBAGE_SEED: objects.get(currentReg)[objectRow][objectCol] = new Crop(Res.CABBAGE_0, objectMapX, objectMapY); break;
@@ -403,6 +409,8 @@ public class Region {
 			case Res.RADISH_SEED: objects.get(currentReg)[objectRow][objectCol] = new Crop(Res.RADISH_0, objectMapX, objectMapY); break;
 			case Res.CAULIFLOWER_SEED: objects.get(currentReg)[objectRow][objectCol] = new Crop(Res.CAULIFLOWER_0, objectMapX, objectMapY); break;
 			}
+			currItem.quantity--;
+			player.setSelectedItem(currItem);
 		}
 	}
 	
@@ -412,8 +420,9 @@ public class Region {
 			
 			for(int worldCol = 0; worldCol < objects.get(Res.FARM)[0].length; worldCol++) {
 				
+				Tile currTerrain = terrain.get(Res.FARM)[worldRow][worldCol];
 				Object currObject = objects.get(Res.FARM)[worldRow][worldCol];
-				if(currObject.objectType == ObjectType.CROP) {
+				if(currObject.objectType == ObjectType.CROP && currTerrain.getID() == Res.LAND_HOE_WATERED) {
 					
 					((Crop)currObject).incrementAge();
 				}
@@ -421,7 +430,36 @@ public class Region {
 		}
 	}
 	
-	public int checkObjectInteract(Player player, int x, int y) {
+	public void updateTerrain() {
+		
+		Random rand = new Random();
+		for(int worldRow = 0; worldRow < terrain.get(Res.FARM).length; worldRow++) {
+			
+			for(int worldCol = 0; worldCol < terrain.get(Res.FARM)[0].length; worldCol++) {
+				
+				Tile currTerrain = terrain.get(Res.FARM)[worldRow][worldCol];
+				Object currObject = objects.get(Res.FARM)[worldRow][worldCol];
+				
+				if(currTerrain != null) {
+					
+					if(currTerrain.getID() == Res.LAND_HOE_WATERED)
+						terrain.get(Res.FARM)[worldRow][worldCol] = new Tile(Res.LAND_HOE, worldCol*Tile.SIZE, worldRow*Tile.SIZE, false);
+					if(currObject.getID() == 0) {
+						
+						if(currTerrain.getID() == Res.LAND_HOE) {
+							int isBuried = rand.nextInt(2);
+							System.out.println(isBuried);
+							if(isBuried == 1)
+								terrain.get(Res.FARM)[worldRow][worldCol] = null;
+						}
+					}
+					
+				}
+			}
+		}
+	}
+	
+	public Object checkObjectInteract(Playing playing, Player player, int x, int y) {
 		
 		int cursorMapX = player.mapX + x - player.screenX;
 		int cursorMapY = player.mapY + y - player.screenY;
@@ -435,12 +473,72 @@ public class Region {
 				
 				Object currObject = objects.get(currentReg)[worldRow][worldCol];
 				if(currObject.isInteractable) {
-					if(currObject.isInObject(cursorMapX, cursorMapY))
-						return currObject.getID();
+					if(currObject.isInObject(cursorMapX, cursorMapY)) {
+						if(currObject.getID() == Res.HOUSE) {
+							
+							setRegion(Res.FARMHOUSE);
+							player.setLocation(192 + Window.CENTER_SCREEN_X, 512 + Window.CENTER_SCREEN_Y);
+							player.setDirection(Direction.UP);
+						}
+						else if(currObject.getID() == Res.BED) {
+							
+							playing.newDay(1);
+						}
+						else if(currObject.getID() == Res.SELL_BOX) {
+							
+						}
+						else if(currObject.objectType == ObjectType.CROP) {
+							
+							Item crop = null;
+							switch(currObject.getID()) {
+							case Res.CORN_4: crop = new Item(Res.CORN, 2); break;
+							case Res.CARROT_4: crop = new Item(Res.CARROT, 1); break;
+							case Res.CABBAGE_4: crop = new Item(Res.CABBAGE, 1); break;
+							case Res.EGGPLANT_4: crop = new Item(Res.EGGPLANT, 2); break;
+							case Res.RADISH_4: crop = new Item(Res.RADISH, 1); break;
+							case Res.CAULIFLOWER_4: crop = new Item(Res.CAULIFLOWER, 1); break;
+							}
+							
+							boolean isDuplicate = false;
+							for(int i = 0; i < 2; i++) {
+								for(int j = 0; j < 12; j++) {
+									
+									if(player.inventory[i][j] != null && player.inventory[i][j].type == ItemType.CROP && player.inventory[i][j].getID() == crop.getID()) {
+										isDuplicate = true;
+										player.inventory[i][j].quantity += crop.quantity;
+										break;
+									}
+								}
+								if(isDuplicate) break;
+							}
+							
+							boolean isFull = true;
+							if(!isDuplicate) {
+								for(int i = 0; i < 2; i++) {
+									for(int j = 0; j < 12; j++) {
+										
+										if(player.inventory[i][j] == null) {
+											isFull = false;
+											player.inventory[i][j] = crop;
+											break;
+										}
+									}
+									if(!isFull) break;
+								}
+							}
+							
+							if(isDuplicate || !isFull) {
+								System.out.println(crop.getID());
+								ObjectData object = Res.OBJECT.get(Res.BLANK);
+								objects.get(Res.FARM)[worldRow][worldCol] = new Object(Res.BLANK, worldCol*Tile.SIZE, worldRow*Tile.SIZE, object.width, object.height, object.solidArea, object.interactArea,
+										object.isSolid, object.isFragile, object.isInteractable);
+							}
+						}
+					}
 				}
 			}
 		}
-		return -1;
+		return null;
 	}
 	
 	public void leaveRegionCheck(Player player) {

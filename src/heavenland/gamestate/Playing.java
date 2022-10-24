@@ -24,6 +24,8 @@ import heavenland.framework.KeyHandler;
 import heavenland.framework.Window;
 import heavenland.game.GTime;
 import heavenland.game.item.ItemData.ItemType;
+import heavenland.game.object.Object;
+import heavenland.game.object.Object.ObjectType;
 import heavenland.game.world.Region;
 import heavenland.gui.GButton;
 import heavenland.gui.GComponent;
@@ -90,7 +92,10 @@ public class Playing extends GameState {
 			clip.start();
 		
 		if(time.getHour() == 18)
-			newDay();
+			newDay(1);
+		
+		if(player.energy <= 0)
+			newDay(2);
 		
 		player.tick(region, upPressed, downPressed, leftPressed, rightPressed);
 		for(int i = 0; i < region.getCurrentRegionObject().length; i++) {
@@ -111,15 +116,17 @@ public class Playing extends GameState {
 	@Override
 	protected void render(Graphics2D g2d) {
 		
+		g2d.setFont(gameFont);
+		
 		region.renderMap(g2d, player);
 		region.renderMapTerrain(g2d, player);
 		region.renderMapObject(g2d, player);
 		player.render(g2d);
 		region.renderMapObjectForeGround(g2d, player);
 		renderInterface(g2d);
-		
-		g2d.setFont(gameFont);
+
 		g2d.setColor(Color.black);
+		g2d.setFont(gameFont.deriveFont(Font.PLAIN, 32));
 		g2d.drawString("DAY " + time.getDay(), Window.WIDTH-240-10+21, 16+10+21+20);
 		g2d.setFont(gameFont.deriveFont(Font.PLAIN, 24));
 		g2d.drawString(time.toStringGame(), Window.WIDTH-240-10+21, 16+10+21+16+32+12);
@@ -176,17 +183,20 @@ public class Playing extends GameState {
 			i.render(g2d);
 	}
 	
-	public void newDay() {
+	public void newDay(int state) {
 
 		gameStateManager.addState(new FadeOut(gameStateManager));
+		clip.stop();
 		time.incrementDay();
 		time.resetTime();
-		
+		region.setRegion(Res.FARMHOUSE);
 		player.setLocation(432 + Window.CENTER_SCREEN_X, 192 + Window.CENTER_SCREEN_Y);
 		player.setDirection(Direction.DOWN);
+		if(state == 1) player.energy = 150;
+		else player.energy = 100;
 		
 		region.updateCrop();
-		
+		region.updateTerrain();
 	}
 	
 	public boolean upPressed, downPressed, leftPressed, rightPressed;
@@ -229,7 +239,7 @@ public class Playing extends GameState {
 		}
 		
 		if(code == KeyEvent.VK_ESCAPE || code == KeyEvent.VK_E) {
-			gameStateManager.addState(new Pause(gameStateManager));
+			gameStateManager.addState(new Pause(gameStateManager, player));
 			upPressed = false;
 			downPressed = false;
 			leftPressed = false;
@@ -284,17 +294,7 @@ public class Playing extends GameState {
 		}
 		else if(clickButton == MouseEvent.BUTTON3) {
 			
-			
-			if(region.checkObjectInteract(player, x, y) == Res.HOUSE) {
-				
-				region.setRegion(Res.FARMHOUSE);
-				player.setLocation(192 + Window.CENTER_SCREEN_X, 512 + Window.CENTER_SCREEN_Y);
-				player.setDirection(Direction.UP);
-			}
-			if(region.checkObjectInteract(player, x, y) == Res.BED) {
-				
-				newDay();
-			}
+			region.checkObjectInteract(this, player, x, y);
 		}
 	}
 

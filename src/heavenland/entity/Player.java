@@ -54,12 +54,12 @@ public class Player extends Entity {
 		this.inventory[0][2] = new Item(Res.AXE);
 		this.inventory[0][3] = new Item(Res.PICKAXE);
 //		this.inventory[0][4] = new Item(Res.SCYTHE);
-		this.inventory[0][5] = new Item(Res.CORN_SEED);
-		this.inventory[0][6] = new Item(Res.CARROT_SEED);
-		this.inventory[0][7] = new Item(Res.CABBAGE_SEED);
-		this.inventory[0][8] = new Item(Res.EGGPLANT_SEED);
-		this.inventory[0][9] = new Item(Res.RADISH_SEED);
-		this.inventory[0][10] = new Item(Res.CAULIFLOWER_SEED);
+		this.inventory[0][5] = new Item(Res.CORN_SEED, 10);
+		this.inventory[0][6] = new Item(Res.CARROT_SEED, 10);
+		this.inventory[0][7] = new Item(Res.CABBAGE_SEED, 1);
+		this.inventory[0][8] = new Item(Res.EGGPLANT_SEED, 1);
+		this.inventory[0][9] = new Item(Res.RADISH_SEED, 1);
+		this.inventory[0][10] = new Item(Res.CAULIFLOWER_SEED, 1);
 		this.selectedItem = 0;
 		this.energy = 150;
 		this.gold = 500;
@@ -74,6 +74,7 @@ public class Player extends Entity {
 			if(moveCounter == 5)
 				moveCounter = 1;
 		}
+		updateInventory();
 		
 	}
 	
@@ -154,6 +155,20 @@ public class Player extends Entity {
 		}
 	}
 	
+	public void updateInventory() {
+		
+		for(int i = 0; i < 2; i++) {
+			for(int j = 0; j < 12; j++) {
+				
+				Item currItem = inventory[i][j];
+				if(currItem != null) {
+					if(currItem.quantity <= 0)
+						inventory[i][j] = null;
+				}
+			}
+		}
+	}
+	
 	public void handleCollisionWithObject(Object o, Region region) {
 		if(!o.isSolid)
 			return;
@@ -224,6 +239,13 @@ public class Player extends Entity {
 		if(getSelectedItem() != null) 
 			return getSelectedItem().getID();
 		return -1;
+	}
+	
+	public void setSelectedItem(Item item) {
+		
+		int row = selectedItem/12;
+		int col = selectedItem%12;
+		inventory[row][col] = item;
 	}
 	
 	public void setLocation(int x, int y) {

@@ -9,8 +9,8 @@ public class GButton {
 
 	BufferedImage normal;
 	BufferedImage pressed;
-	int x;
-	int y;
+	public int x;
+	public int y;
 	int width;
 	int height;
 	public boolean isPressed;
@@ -33,6 +33,17 @@ public class GButton {
 		this.y = y;
 		this.width = width;
 		this.height = height;
+		this.isPressed = false;
+	}
+	
+	public GButton(BufferedImage normal, BufferedImage pressed, int x, int y) {
+		
+		this.normal = normal;
+		this.pressed = pressed;
+		this.x = x;
+		this.y = y;
+		this.width = normal.getWidth();
+		this.height = normal.getHeight();
 		this.isPressed = false;
 	}
 	

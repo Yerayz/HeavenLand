@@ -57,6 +57,21 @@ public class Loader {
 			Res.GUI.add(energyBar.getSubimage(11, 3, 5, 59));
 			Res.GUI.add(ImageIO.read(getClass().getResourceAsStream("/gui/information_bar.png")));
 			Res.GUI.add(ImageIO.read(getClass().getResourceAsStream("/gui/money_bar.png")));
+			Res.GUI.add(ImageIO.read(getClass().getResourceAsStream("/gui/pause_bar.png")));
+			BufferedImage inventNav = ImageIO.read(getClass().getResourceAsStream("/gui/pause_inventory_button.png"));
+			Res.GUI.add(inventNav.getSubimage(0, 0, 19, 13));
+			Res.GUI.add(inventNav.getSubimage(19, 0, 19, 18));
+			BufferedImage buyNav = ImageIO.read(getClass().getResourceAsStream("/gui/pause_buy_button.png"));
+			Res.GUI.add(buyNav.getSubimage(0, 0, 19, 13));
+			Res.GUI.add(buyNav.getSubimage(19, 0, 19, 18));
+			BufferedImage outNav = ImageIO.read(getClass().getResourceAsStream("/gui/pause_out_button.png"));
+			Res.GUI.add(outNav.getSubimage(0, 0, 19, 13));
+			Res.GUI.add(outNav.getSubimage(19, 0, 19, 18));
+			BufferedImage plusMinus = ImageIO.read(getClass().getResourceAsStream("/gui/plus_minus_button.png"));
+			Res.GUI.add(plusMinus.getSubimage(0, 0, 7, 8));
+			Res.GUI.add(plusMinus.getSubimage(7, 0, 7, 8));
+			Res.GUI.add(plusMinus.getSubimage(0, 8, 7, 8));
+			Res.GUI.add(plusMinus.getSubimage(7, 8, 7, 8));
 			
 		} catch (IOException e) {
 			System.out.println("[Loader] : Can't load gui / file not found");
@@ -193,6 +208,7 @@ public class Loader {
 			Res.OBJECT.add(new ObjectData(cropSheet.getSubimage(64, 160, 16, 32), 16, 32, false, true, false));
 			
 			Res.OBJECT.add(new ObjectData(ImageIO.read(getClass().getResourceAsStream("/object/bed.png")), 32, 64, new Rectangle(0, 0, 32, 48), true, false, true));
+			Res.OBJECT.add(new ObjectData(ImageIO.read(getClass().getResourceAsStream("/object/sell_box.png")), 32, 32, new Rectangle(0, 0, 32, 15), new Rectangle(0, -11, 32, 26), true, false, true));
 
 		} catch (IOException e) {
 			System.out.println("[Loader] : Can't load objects / file not found");

@@ -22,6 +22,15 @@ public class GComponent {
 		this.height = height;
 	}
 	
+	public GComponent(BufferedImage image, int x, int y, double scale) {
+		
+		this.image = image;
+		this.x = x;
+		this.y = y;
+		this.width = (int)(image.getWidth()*scale);
+		this.height = (int)(image.getHeight()*scale);
+	}
+	
 	public GComponent(BufferedImage image, int x, int y) {
 		
 		this.image = image;

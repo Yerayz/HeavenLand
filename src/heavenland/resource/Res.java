@@ -42,6 +42,18 @@ public class Res {
 	public static final byte ENERGY_BAR = 12;
 	public static final byte INFORMATION_BAR = 13;
 	public static final byte MONEY_BAR = 14;
+	public static final byte PAUSE_BAR = 15;
+	public static final byte PAUSE_INVENTORY_BTN = 16;
+	public static final byte PAUSE_INVENTORY_BTN_P = 17;
+	public static final byte PAUSE_BUY_BTN = 18;
+	public static final byte PAUSE_BUY_BTN_P = 19;
+	public static final byte PAUSE_OUT_BTN = 20;
+	public static final byte PAUSE_OUT_BTN_P = 21;
+	public static final byte PLUS_BTN = 22;
+	public static final byte PLUS_BTN_P = 23;
+	public static final byte MINUS_BTN = 24;
+	public static final byte MINUS_BTN_P = 25;
+	
 	
 	// TILES
 	public static final byte LAND = 0;
@@ -130,6 +142,7 @@ public class Res {
 	public static final byte CAULIFLOWER_3 = 40;
 	public static final byte CAULIFLOWER_4 = 41;
 	public static final byte BED = 42;
+	public static final byte SELL_BOX = 43;
 	
 	// ITEM
 	public static final byte WATERING_CAN = 0;
